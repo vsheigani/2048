@@ -9,15 +9,17 @@
 #include <unistd.h>
 #include <fcntl.h>
 
-
+  // Array for storing numbers in it
   int nums[4][4];
+  // Array for storing nums array changes
   bool changed[4][4];
+  
   char getkey;
-  int sw,rr,cc,row,col,yy,z,j,i,m,n;
+  int row,col,z,j,i,m,n;
   struct timeval now1;
   struct timeval now2;
 
-
+  // Function for generating random row number
     int random_1(){
         gettimeofday(&now1, NULL);
         int randomnumber;
@@ -26,6 +28,7 @@
         return randomnumber;
         }
 
+  // Function for generating random column number
    int random_2(){
          gettimeofday(&now2,NULL);
          int randomnumber_2;
@@ -33,7 +36,8 @@
          randomnumber_2 = (rand()%4);
          return randomnumber_2;
    }
-
+   
+  // Function for inserting a number in specific row and column
   int random_insert(){
      int counter;
   for (counter = 1; counter < 1000; counter++) {
@@ -50,8 +54,9 @@
 
 
 
-
+  // Function for moving all numbers to up and summing nearby equal numbers
   int moveupandsum(){
+  // this variable count full cells between two numbers
   int between=0;
   int isdeal=-1;
   int ss1,ss2,ss3;
@@ -72,7 +77,7 @@
       }
     }
 
-
+  // this will sum two non zero numbers that there is no full cells between them
       if (between==0 && nums[s2][s1] != 0 && nums[s2-s3][s1]!=0 && nums[s2][s1]==nums[s2-s3][s1]) { 
         nums[s2-s3][s1]+=nums[s2][s1];
         nums[s2][s1]=0;
@@ -85,6 +90,7 @@
     }
   }
     
+  // this will shift all numbers to the uppest avaliable empty cells
   for (ss1 = 0; ss1 < 4; ss1++) {
     for (ss2 = 0; ss2 <=3 ; ss2++) {
       if (nums[ss2][ss1]!=0) {
@@ -105,7 +111,9 @@
 
 
 
+  // Function for moving all numbers to the down and summing nearby equal numbers
   int movedownandsum(){
+  // this variable count full cells between two numbers
   int between=0;
   int isdeal=-1;
   int ss1,ss2,ss3;
@@ -127,6 +135,7 @@
     }
 
 
+  // this will sum two non zero numbers that there is no full cells between them
       if (between==0 && nums[s2][s1] != 0 && nums[s2+s3][s1]!=0 && nums[s2][s1]==nums[s2+s3][s1]) { 
         nums[s2+s3][s1]+=nums[s2][s1];
         nums[s2][s1]=0;
@@ -139,6 +148,7 @@
     }
   }
     
+  // this will shift all numbers to the downest avaliable empty cells
   for (ss1 = 0; ss1 < 4; ss1++) {
     for (ss2 = 3; ss2 >= 0 ; ss2--) {
       if (nums[ss2][ss1]!=0) {
@@ -158,7 +168,9 @@
   }
 
 
+  // Function for moving all numbers to the right and summing nearby equal numbers
   int moverightandsum(){
+  // this variable count full cells between two numbers
   int between=0;
   int isdeal=-1;
   int ss1,ss2,ss3;
@@ -180,6 +192,7 @@
     }
 
 
+  // this will sum two non zero numbers that there is no full cells between them
       if (between==0 && nums[s2][s1] != 0 && nums[s2][s1+s3]!=0 && nums[s2][s1]==nums[s2][s1+s3]) { 
         nums[s2][s1+s3]+=nums[s2][s1];
         nums[s2][s1]=0;
@@ -193,6 +206,7 @@
     }
   }
     
+  // this will shift all numbers to the rightest avaliable empty cells
   for (ss2 = 0; ss2 < 4; ss2++) {
     for (ss1 = 3; ss1 >= 0 ; ss1--) {
       if (nums[ss2][ss1]!=0) {
@@ -212,7 +226,9 @@
 }
 
 
+  // Function for moving all numbers to the left and summing nearby equal numbers
   int moveleftandsum(){
+  // this variable count full cells between two numbers
   int between=0;
   int isdeal=-1;
   int ss1,ss2,ss3;
@@ -234,6 +250,7 @@
     }
 
 
+  // this will sum two non zero numbers that there is no full cells between them
       if (between==0 && nums[s2][s1] != 0 && nums[s2][s1-s3]!=0 && nums[s2][s1]==nums[s2][s1-s3]) { 
         nums[s2][s1-s3]+=nums[s2][s1];
         nums[s2][s1]=0;
@@ -246,6 +263,7 @@
     }
   }
     
+  // this will shift all numbers to the leftest avaliable empty cells
   for (ss2 = 0; ss2 < 4; ss2++) {
     for (ss1 = 0; ss1 <=3 ; ss1++) {
       if (nums[ss2][ss1]!=0) {
@@ -264,7 +282,7 @@
   return 0;
   }
 
-  
+  // this function change application state to recieve arrow keys without buffering them and hitting enter key  
   void setBufferedInput(bool enable) {
     static bool enabled = true;
     static struct termios old;
@@ -280,7 +298,7 @@
     enabled = false;
     }
   }
-
+  // below function print any changed number in nums array in specified loction
   int printchanges(){ 
   int ss2,ss1,ss3;
   int xposition;
@@ -310,8 +328,10 @@ int main(int argc, const char *argv[])
 {
 int ff;
 
+   // Clearing terminal screen using system function
    system("clear");
   
+  // filling nums and changed arrays witn zero and false values in the application start
   for (m = 0; m < 4; m++) {
     for (n = 0; n < 4; n++) {
       nums[m][n]=0;
@@ -322,6 +342,7 @@ int ff;
   nums[3][2]=2;
   nums[1][2]=2;
 
+  // printing game table with nums array number in application start
   for (i = 0; i < 4; i++) {
     for (j = 0; j < 4; j++) {
       if(nums[i][j] != 0){
@@ -339,26 +360,34 @@ int ff;
   
       setBufferedInput(false);
       while(1){
+      // getting arrow keys from user repeatedly 
       getkey=getchar(); 
+
+      // check which arrow keys are pressed
       switch(getkey){
+
+      // calling required functions when up key is pressed
       case 65:
       moveupandsum();
       random_insert();
       printchanges();
       break;
-    
+      
+      // calling required functions when down key is pressed
       case 66:
       movedownandsum();
       random_insert();
       printchanges();
       break;
 
+      // calling required functions when right key is preesed
       case 67:
       moverightandsum();
       random_insert();
       printchanges();
       break;
 
+      // calling required functions when left key is pressed
       case 68:
       moveleftandsum();
       random_insert();
